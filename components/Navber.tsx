@@ -3,14 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { NavLinks } from "@/constant";
 import Authprovider from "./Authprovider";
+import { getCurrentUser } from "@/lib/session";
 
-const Navber = () => {
+const Navber = async () => {
+  const session = await getCurrentUser();
+  // console.log(session?.user?.image);
   interface LinkProps {
     href: string;
     key: string;
     text: string;
   }
-  const Login = {};
 
   return (
     <div>
@@ -39,10 +41,22 @@ const Navber = () => {
             </div>
           </div>
           <div>
-            {Login ? (
-              <div className="cursor-pointer">
-                Login {'  '}
-                <Link href="/">Share Your Work</Link>
+            {session?.user ? (
+              <div className="cursor-pointer flex items-center">
+                {session?.user?.image && (
+                  <>
+                    <Image
+                      src={session?.user?.image}
+                      alt={`${session?.user?.image}` || 'Profile_photo'}
+                      width={35}
+                      height={35}
+                      className="rounded-full mr-5"
+                    />
+                    <span>
+                      <Link href="/">Share Work</Link>
+                    </span>
+                  </>
+                )}
               </div>
             ) : (
               <div>
