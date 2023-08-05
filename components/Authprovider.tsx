@@ -18,12 +18,13 @@ const Authprovider = () => {
   const [providers, setProvider] = useState<providers | null>(null);
 
   useEffect(() => {
-    (async () => {
+    const getproviderhandler =  async function(){
       const response = await getProviders();
       //@ts-ignore
       setProvider(response);
       console.log({ response: response });
-    })();
+    };
+    getproviderhandler()
   }, []);
 
   return (

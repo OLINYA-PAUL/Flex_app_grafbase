@@ -28,17 +28,17 @@ const Navber = async () => {
                 className="cursor-pointer"
               />
             </Link>
-            <div>
-              <ul className="items-center md:flex hidden ">
+              <div className="items-center md:flex hidden ">
                 {NavLinks.map(({ href, key, text }: LinkProps) => (
-                  <li className="mr-5 cursor-pointer hover:text-red-500">
-                    <Link href={href} key={key}>
-                      {text}
-                    </Link>
-                  </li>
+                  <ul className="mr-5 cursor-pointer hover:text-red-500">
+                    <li>
+                      <Link href={href} key={key}>
+                        {text}
+                      </Link>
+                    </li>
+                  </ul>
                 ))}
-              </ul>
-            </div>
+              </div>
           </div>
           <div>
             {session?.user ? (
@@ -47,7 +47,7 @@ const Navber = async () => {
                   <>
                     <Image
                       src={session?.user?.image}
-                      alt={`${session?.user?.image}` || 'Profile_photo'}
+                      alt={`${session?.user?.image}` || "Profile_photo"}
                       width={35}
                       height={35}
                       className="rounded-full mr-5"
