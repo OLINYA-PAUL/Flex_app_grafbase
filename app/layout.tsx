@@ -21,10 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Navber />
+        <section className='containers'>
         <main>
         {children}
         </main>
-        <Footer/> 
+        <Footer/>
+        </section> 
       </body>
     </html>
   )

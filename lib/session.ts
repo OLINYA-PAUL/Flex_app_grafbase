@@ -1,48 +1,86 @@
 import { getServerSession } from "next-auth/next";
-import { NextAuthOptions, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
-import { Jwt } from "jsonwebtoken";
+import { NextAuthOptions, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import jsonwebtoken from "jsonwebtoken";
-import { SessionInterface } from "@/common.types";
+import { JWT } from "next-auth/jwt";
+import { SessionInterface, UserProfile } from "@/common.types";
+import { createUser, getUser } from "./action";
 
-export const authOption: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      //@ts-ignore
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      //@ts-ignore
-      clientSecret: process.env.GOOGLE_CLIENT_SECERT_KEY,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECERT_KEY!,
     }),
   ],
-  // jwt: {
-  //   encode: ({ secret, token }) => {},
-  //   decode: async ({ secret, token }) => {},
-  // },
+  jwt: {
+      encode: ({ secret, token }) => { 
+        console.log({X:`${secret} ${token}`})
+        const encodedToken = jsonwebtoken.sign({
+          ...token,
+          iss:"grafbase",
+          exp: Math.floor(Date.now() / 1000)+ 60 * 60
+        }, secret)
+
+        return encodedToken;
+      },
+      decode: async ({ secret, token }) => {
+        const decodedToken = jsonwebtoken.verify(token!, secret) as JWT
+        return decodedToken;
+       }
+  },
   theme: {
     colorScheme: "light",
     logo: "/logo.png",
   },
   callbacks: {
     async session({ session }) {
-      return session;
-    },
-    //@ts-ignore
-    async signIn({ user }: { user: AdapterUser | User }) {
-      try {
-        // If user is is available login user
+      const email = session.user?.email as string;
 
-        // If there is no user create new user from the dataBase
-        return true;
+      // connecting google user with the user created on grafbase 
+      try {
+        const data = (await getUser(email as string)) as { user?: UserProfile };
+        const newSession = {
+          ...session,
+          user: {
+            ...session?.user,
+            ...data?.user,
+          },
+        };
+
+        return newSession;
       } catch (error: any) {
         console.log(error.message);
+        return session
+      }
+
+    },
+
+    async signIn({ user }: { user?: AdapterUser | User }) {
+      try {
+        // check if user exsit
+        const userExsit = (await getUser(user?.email as string)) as {
+          user?: UserProfile;
+        };
+        if (!userExsit.user) {
+          createUser(
+            user?.email as string,
+            user?.name as string,
+            user?.image as string
+          );
+        }
+
+        return true;
+      } catch (error: any) {
+        console.log(`there is error creating ${error.message}`);
+        return false;
       }
     },
   },
 };
 
-export async function getCurrentUser() {
-  const session = (await getServerSession(authOption)) as SessionInterface;
+export const getCurrentUser = async () => {
+  const session = (await getServerSession(authOptions)) as SessionInterface;
   return session;
-}
+};

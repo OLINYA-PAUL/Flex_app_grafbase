@@ -15,36 +15,35 @@ type Provider = {
 type providers = Record<string, Provider>;
 
 const Authprovider = () => {
-  const [providers, setProvider] = useState<providers | null>(null);
+
+  const [authProvider, setAuthProvider] = useState<providers | null>(null);
 
   useEffect(() => {
-    const getproviderhandler =  async function(){
+    const getproviderhandler = async function () {
       const response = await getProviders();
       //@ts-ignore
-      setProvider(response);
-      console.log({ response: response });
+      setAuthProvider(response);
     };
-    getproviderhandler()
+    getproviderhandler();
   }, []);
 
-  return (
-    <div>
-      {providers && (
+  if (authProvider) {
+    return (
         <div>
-          {Object.values(providers).map((provider, i) => (
+        {Object.values(authProvider).map((providers:any, i:any) => (
+            //@ts-ignore
             <button
-              type="button"
-              key={i}
-              //@ts-ignore
-              onClick={() => signIn(provider?.id)}
+            type="button"
+            key={i}
+            onClick={() => signIn(providers?.id)}
             >
-              {provider.id}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            {providers.id}
+              { console.log({response: providers })}
+          </button>
+        ))}
+      </div>
+    );
+  }
 };
 
 export default Authprovider;
