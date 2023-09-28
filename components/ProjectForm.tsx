@@ -7,8 +7,7 @@ import FormField from "./FormField";
 import { categoryFilters } from "@/constant";
 import CustomeMenu from "./CustomeMenu";
 import Button from "./Button";
-import { createNewProject } from "@/lib/action";
-import { getToken } from "next-auth/jwt";
+import { createNewProject, getUserToken } from "@/lib/action";
 import { useRouter } from "next/navigation";
 
 interface formProps {
@@ -48,12 +47,11 @@ const ProjectForm = ({ type, session }: formProps) => {
     };
   };
 
-  const handlerFormSummit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlerFormSummit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSummiting(true);
 
-    //@ts-ignore
-    const { token } = await getToken();
+    const { token } = await getUserToken();
 
     try {
       if (type === "create") {
@@ -69,7 +67,7 @@ const ProjectForm = ({ type, session }: formProps) => {
 
   return (
     <div>
-      <form onClick={() => handlerFormSummit} className="form_container">
+      <form onClick={handlerFormSummit} className="form_container">
         <div className=" flexCenter upload_container">
           <div>
             <label
