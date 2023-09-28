@@ -44,7 +44,7 @@ export const createUser = async (email: string, name: string, avataUrl: string) 
     return makeGraphqlRequest(createUserMutation, variables)
 } 
 
-export const getToken = async () => {
+export const getUserToken = async () => {
     try {
         const response = await (fetch(`${serverUrl}/api/auth/token`));
         return await response.json();
