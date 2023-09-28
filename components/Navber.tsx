@@ -5,10 +5,8 @@ import { NavLinks } from "@/constant";
 import Authprovider from "./Authprovider";
 import { getCurrentUser } from "@/lib/session";
 
-
-
-const Navber =  async () => {
-  const session =  await getCurrentUser();
+const Navber = async () => {
+  const session = await getCurrentUser();
   // console.log(session?.user?.image);
   interface LinkProps {
     href: string;
@@ -19,11 +17,11 @@ const Navber =  async () => {
   return (
     <div>
       <header>
-        <nav className=" flex justify-between items-center w-full height-fit p-3 px-5 shadow-md">
+        <nav className=" flex justify-between items-center w-full height-fit p-3 px-5 bg-[rgba(26,26,29,0.9)] shadow-md">
           <div className="flex items-center">
             <Link href="/" className="mr-5">
               <Image
-                src="/logo.svg"
+                src="/logo-purple.svg"
                 height={43}
                 width={115}
                 alt="Flexible_logo"
@@ -53,12 +51,12 @@ const Navber =  async () => {
                   />
                 )}
                 <span>
-                  <Link href="/">Share Work</Link>
+                  <Link href="/create-project">Share Work</Link>
                 </span>
               </div>
             ) : (
               <div>
-               <Authprovider />
+                <Authprovider />
               </div>
             )}
           </div>

@@ -12,6 +12,10 @@
 
 body {
   font-family: Inter;
+  width: 100%;
+  background-color: #000;
+  height:auto;
+  color: #fff;
 }
 
 ::-webkit-scrollbar {
@@ -35,6 +39,19 @@ body {
   padding: 10px;
 }
 
+::-moz-::-webkit-scrollbar-thumb{
+    width: 5px;
+  height: 4px;
+}
+::-moz-::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 12px;
+}
+
+::-moz-range::-webkit-scrollbar {
+  width: 5px;
+}
+
 .flexCenter {
   @apply flex justify-center items-center;
 }
@@ -44,14 +61,56 @@ body {
 }
 
 .flexStart {
-  @apply flex items-center justify-start;
+  @apply flex items-start justify-start;
 }
 
 /* footer */
 .footer-container {
-  @apply flex w-full p-3 mt-5 bg-light-white flex-col;
+  @apply flex w-full p-5 mt-5  bg-[rgba(26,26,29,0.9)] flex-col;
 }
 
 .footer_column {
   @apply flex-1 flex flex-col gap-3 text-sm min-w-max;
+}
+/* model */
+.model_text{
+  @apply text-5xl text-white mt-5 self-center mb-5 text-center font-extrabold max-sm:text-[30px] max-sm:mt-4;
+}
+
+.model_container{
+  @apply w-full fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-[#fff]/20;
+}
+.modal_overlay {
+  @apply absolute h-[95%] w-full bottom-0 text-white bg-[#000] rounded-t-3xl  overflow-auto top-12  p-10 pt-5 max-sm:p-5;
+}
+/* from image container */
+.form_container {
+  @apply  w-[100%] text-lg z-[100] h-auto max-sm:mt-0;
+}
+.upload_container{
+  @apply w-full border-[4px]  mt-3 border-[rgba(26,26,29,0.9)] border-dashed max-sm:w-[100%] m-auto lg:max-w-[100%] h-60 z-20 relative max-sm:p-5;
+} 
+
+.form_image_lable{
+  @apply text-3xl max-sm:text-[20px] text-center text-white flex items-center justify-center self-center absolute top-[100px] max-sm:left-[20%] max-sm:text-sm z-50;
+}
+.input_image{
+  @apply w-[400px] p-10 h-full z-30 cursor-pointer bg-transparent outline-none border-none text-white flex items-center justify-between opacity-[0];
+}
+.form_field-input {
+  @apply w-full flex-1 outline-0  bg-[rgba(26,26,29,0.9)] rounded-xl p-4 block;
+}
+.form_field-input::placeholder{
+  @apply text-white
+
+}
+.custome_button{
+  @apply p-3 text-lg  bg-[rgba(26,26,29,0.9)] outline-none border-none rounded-md;
+}
+.custom_menu-items {
+  @apply flex-col absolute left-0 mt-2 xs:min-w-[300px] w-fit max-h-64 origin-top-right rounded-xl  bg-[rgba(26,26,29,0.9)] border shadow-menu overflow-y-auto mb-20;
+}
+.custom_menu-item {
+  @apply text-left w-full px-5 py-2 text-sm self-start whitespace-nowrap 
+  capitalize;
 }

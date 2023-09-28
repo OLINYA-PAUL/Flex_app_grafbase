@@ -1,8 +1,8 @@
 const Home = () => {
   return (
-    <main>
-      <h1>catergories</h1>
-    </main>
+    <section className="mt-5 pl-5 pr-5 w-full">
+
+    </section>
   );
 }
 

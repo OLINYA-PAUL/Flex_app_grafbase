@@ -1,12 +1,13 @@
 import { GraphQLClient } from "graphql-request";
-import { createUserMutation, getUserQuery } from "@/graphql";
+import { createProjectMutation, createUserMutation, getUserQuery } from "@/graphql";
+import { ProjectForm } from "@/common.types";
 
 // check if connection is in production or devlopment
 const isproduction = process.env.NODE_ENV === "production";
 
 const apiUrl = isproduction
     ? process.env.NEXT_PUBLIC_GRAFBASE_API_URL || ""
-    : "http://localhost:/127.0.0.1:4000/graphql";
+    : " http://127.0.0.1:4000/graphql";
 
 const apikey = isproduction
     ? process.env.NEXT_PUBLIC_GRAFBASE_API_KEY || ""
@@ -14,7 +15,7 @@ const apikey = isproduction
 
 const serverUrl = isproduction
     ? process.env.NEXT_PUBLIC_SERVER_URL
-    : 'http://localhost:3000';
+    : 'http://localhost:3001';
 
 const client = new GraphQLClient(apiUrl);
 
@@ -42,3 +43,46 @@ export const createUser = async (email: string, name: string, avataUrl: string) 
     }
     return makeGraphqlRequest(createUserMutation, variables)
 } 
+
+export const getToken = async () => {
+    try {
+        const response = await (fetch(`${serverUrl}/api/auth/token`));
+        return await response.json();
+        
+    } catch (error:any) {
+        console.log(error.message)
+    }
+}
+
+const uploadImage = async (imagepath:string) => {
+try {
+        const response = await fetch(`${serverUrl}/api/upload`,{
+        method:"POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({path:imagepath})
+    })
+
+    return await response.json();
+    
+} catch (error:any) {
+    throw new Error(error.message)
+}
+}
+
+export const createNewProject = async (form: ProjectForm, creatorId: string, token:string) => {
+    const imageUrl = await uploadImage(form.image);
+    if(imageUrl.url){
+        client.setHeader('Authorization', `Bearer ${token}`)
+
+        const variables = {
+            input: {
+                ...form,
+                Image:imageUrl.url,
+                createdBy : {
+                    link:creatorId
+                }
+            }
+        }
+        return makeGraphqlRequest(createProjectMutation, variables)
+    }
+}

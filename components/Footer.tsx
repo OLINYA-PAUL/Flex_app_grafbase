@@ -3,21 +3,27 @@ import Image from "next/image";
 import { footerLinks } from "@/constant";
 import Link from "next/link";
 
-interface footerProps {
+interface linkProps {
   title: string;
   links: Array<string>;
 }
 
-const FooterColumn = ({ title, links }: footerProps) => (
-  <div className="footer_column">
-    <h1 className="font-semibold text-gray text-[20px] mb-3">{title}</h1>
-    <ul className="gap-2 font-normal">
-      {links.map((link) => (
-        <Link href={link} key={link}>
-          <li className="mb-3 hover:text-red-500">{link}</li>
-        </Link>
-      ))}
-    </ul>
+const FooterItemsLinks = ({ title, links }: linkProps) => (
+  <div className="items-start justify-start self-start flex-1">
+    <div className="font-bold text-gray text-[20px] mt-3">{title}</div>
+    <div>
+      <ul className="mt-5">
+        {links &&
+          links.map((links, index) => (
+            <li
+              className="mt-3 text-sm cursor-pointer hover:border-b-[1px] hover:border-red-50"
+              key={index}
+            >
+              <Link href={`/${links}`}>{links}</Link>
+            </li>
+          ))}
+      </ul>
+    </div>
   </div>
 );
 
@@ -39,63 +45,46 @@ const Footer = () => {
             share, grow, and get hired.
           </p>
         </div>
-        <div className="flex flex-row justify-between mt-5 md:flex-wrap max-sm:flex-wrap">
-          <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[0].title}
-              links={footerLinks[0].links}
-            />
-          </div>
-          <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[3].title}
-              links={footerLinks[3].links}
-            />
-           
-          </div>
-          <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[4].title}
-              links={footerLinks[4].links}
-            />
-          </div>
-          <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[5].title}
-              links={footerLinks[5].links}
-            />
-          </div>
-            <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[6].title}
-              links={footerLinks[6].links}
-            />
-          </div>
-          <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[1].title}
-              links={footerLinks[1].links}
-            />
-          </div>
-           <div className="flexbasis">
-            <FooterColumn
-              title={footerLinks[2].title}
-              links={footerLinks[2].links}
-            />
-           
-          </div>
+        <div className="w-full flex-wrap mt-5 h-auto flex items-start justify-start flex-1 self-start">
+          <FooterItemsLinks
+            title={footerLinks[0].title}
+            links={footerLinks[0].links}
+          />
+          <FooterItemsLinks
+            title={footerLinks[1].title}
+            links={footerLinks[1].links}
+          />
+          <FooterItemsLinks
+            links={footerLinks[2].links}
+            title={footerLinks[2].title}
+          />
+          <FooterItemsLinks
+            title={footerLinks[3].title}
+            links={footerLinks[3].links}
+          />
+          <FooterItemsLinks
+            title={footerLinks[4].title}
+            links={footerLinks[4].links}
+          />
+          <FooterItemsLinks
+            title={footerLinks[5].title}
+            links={footerLinks[5].links}
+          />
+          <FooterItemsLinks
+            title={footerLinks[6].title}
+            links={footerLinks[6].links}
+          />
         </div>
       </div>
-      <div className="flexBetween w-full">
+      <div className="flexBetween w-full text-white  pb-5 ">
         <div>
           {" "}
           <p>@ 2023 Flexibble. All rights reserved</p>
         </div>
         <div>
           {" "}
-          <p className="text-gray">
-            <span className="text-black font-semibold">10,214</span> projects
-            submitted
+          <p>
+            <span className="font-semibold">10,214</span> projects submitted
           </p>
         </div>
       </div>

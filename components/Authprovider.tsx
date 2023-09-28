@@ -36,6 +36,7 @@ const Authprovider = () => {
             type="button"
             key={i}
             onClick={() => signIn(providers?.id)}
+            className="bg-purple-500 px-5 py-3 text-white text-lg font-bold outline-none border-none rounded-md cursor-pointer"
             >
             {providers.id}
               { console.log({response: providers })}
