@@ -15,7 +15,7 @@ const apikey = isproduction
 
 const serverUrl = isproduction
     ? process.env.NEXT_PUBLIC_SERVER_URL
-    : 'http://localhost:3001';
+    : 'http://localhost:3000';
 
 const client = new GraphQLClient(apiUrl);
 
@@ -44,21 +44,34 @@ export const createUser = async (email: string, name: string, avataUrl: string) 
     return makeGraphqlRequest(createUserMutation, variables)
 } 
 
+
 export const getUserToken = async () => {
-    try {
-        const response = await (fetch(`${serverUrl}/api/auth/token`));
-        return await response.json();
-        
-    } catch (error:any) {
-        console.log(error.message)
+  try {
+    const response = await fetch(`${serverUrl}/api/auth/token`);
+    
+    if (!response.ok) {
+      throw new Error(`Request failed with status: ${response.status}`);
     }
-}
+
+    const data = await response.json();
+    
+    if (data && data.token) {
+      return { token: data.token };
+    } else {
+      throw new Error('Token not found in response');
+    }
+  } catch (error: any) {
+    console.error(error.message);
+    throw error;
+
+  }
+};
+
 
 const uploadImage = async (imagepath:string) => {
 try {
         const response = await fetch(`${serverUrl}/api/upload`,{
         method:"POST",
-        headers: { "Content-type": "application/json" },
         body: JSON.stringify({path:imagepath})
     })
 
@@ -72,7 +85,7 @@ try {
 export const createNewProject = async (form: ProjectForm, creatorId: string, token:string) => {
     const imageUrl = await uploadImage(form.image);
     if(imageUrl.url){
-        client.setHeader('Authorization', `Bearer ${token}`)
+        client.setHeader("Authorization", `Bearer ${token}`)
 
         const variables = {
             input: {

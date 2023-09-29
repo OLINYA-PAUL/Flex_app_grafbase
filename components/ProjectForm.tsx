@@ -40,7 +40,9 @@ const ProjectForm = ({ type, session }: formProps) => {
     if (!file.type.includes("image")) return alert("Please upload an image!");
 
     const reader = new FileReader();
+
     reader.readAsDataURL(file);
+
     reader.onload = () => {
       const result = reader.result as string;
       handleStateChange("image", result);
@@ -50,13 +52,16 @@ const ProjectForm = ({ type, session }: formProps) => {
   const handlerFormSummit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSummiting(true);
-
+    //@ts-ignore
     const { token } = await getUserToken();
+    console.log({ Toxxxx: token });
 
     try {
-      if (type === "create") {
-        await createNewProject(form, session?.user?.id, token);
-        router.push("/");
+      if (token) {
+        if (type === "create") {
+          await createNewProject(form, session?.user?.id, token);
+          router.push("/");
+        }
       }
     } catch (error: any) {
       console.log(error.message);
@@ -67,7 +72,7 @@ const ProjectForm = ({ type, session }: formProps) => {
 
   return (
     <div>
-      <form onClick={handlerFormSummit} className="form_container">
+      <form onSubmit={handlerFormSummit} className="form_container">
         <div className=" flexCenter upload_container">
           <div>
             <label
@@ -119,7 +124,7 @@ const ProjectForm = ({ type, session }: formProps) => {
             type="url"
             title="Website URL"
             state={form.liveSiteUrl}
-            placeholder="https://jsmastery.pro"
+            placeholder="https://OlinyaCPaul.com"
             setState={(value) => handleStateChange("liveSiteUrl", value)}
           />
 
@@ -127,7 +132,7 @@ const ProjectForm = ({ type, session }: formProps) => {
             type="url"
             title="GitHub URL"
             state={form.githubUrl}
-            placeholder="https://github.com/adrianhajdin"
+            placeholder="https://github.com/OLINYA-PAUL"
             setState={(value) => handleStateChange("githubUrl", value)}
           />
         </div>
