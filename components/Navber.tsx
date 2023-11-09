@@ -5,6 +5,8 @@ import { NavLinks } from "@/constant";
 import Authprovider from "./Authprovider";
 import { getCurrentUser } from "@/lib/session";
 import Button from "./Button";
+import { signOut } from "next-auth/react";
+import SignOut from "./SignOut";
 
 const Navber = async () => {
   const session = await getCurrentUser();
@@ -56,6 +58,7 @@ const Navber = async () => {
                     <Button title="Share Work" />
                   </Link>
                 </span>
+                <div className="ml-5"><SignOut /></div>
               </div>
             ) : (
               <div>
