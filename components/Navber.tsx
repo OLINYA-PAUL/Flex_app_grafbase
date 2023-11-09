@@ -4,6 +4,7 @@ import Link from "next/link";
 import { NavLinks } from "@/constant";
 import Authprovider from "./Authprovider";
 import { getCurrentUser } from "@/lib/session";
+import Button from "./Button";
 
 const Navber = async () => {
   const session = await getCurrentUser();
@@ -40,7 +41,7 @@ const Navber = async () => {
           </div>
           <div>
             {session?.user ? (
-              <div className="cursor-pointer flex items-center">
+              <div className="cursor-pointer flex items-center justify-center">
                 {session?.user?.image && (
                   <Image
                     src={session?.user?.image}
@@ -51,7 +52,9 @@ const Navber = async () => {
                   />
                 )}
                 <span>
-                  <Link href="/create-project">Share Work</Link>
+                  <Link href="/create-project">
+                    <Button title="Share Work" />
+                  </Link>
                 </span>
               </div>
             ) : (

@@ -1,5 +1,5 @@
 import { GraphQLClient } from "graphql-request";
-import { createProjectMutation, createUserMutation, getUserQuery } from "@/graphql";
+import { createProjectMutation, createUserMutation, getUserQuery, projectsQuery } from "@/graphql";
 import { ProjectForm } from "@/common.types";
 
 // check if connection is in production or devlopment
@@ -42,60 +42,67 @@ export const createUser = async (email: string, name: string, avataUrl: string) 
         }
     }
     return makeGraphqlRequest(createUserMutation, variables)
-} 
+}
 
 
 export const getUserToken = async () => {
-  try {
-    const response = await fetch(`${serverUrl}/api/auth/token`);
-    
-    if (!response.ok) {
-      throw new Error(`Request failed with status: ${response.status}`);
-    }
+    try {
+        const response = await fetch(`${serverUrl}/api/auth/token`);
 
-    const data = await response.json();
-    
-    if (data && data.token) {
-      return { token: data.token };
-    } else {
-      throw new Error('Token not found in response');
-    }
-  } catch (error: any) {
-    console.error(error.message);
-    throw error;
+        if (!response.ok) {
+            throw new Error(`Request failed with status: ${response.status}`);
+        }
 
-  }
+        const data = await response.json();
+
+        if (data && data.token) {
+            return { token: data.token };
+        } else {
+            throw new Error('Token not found in response');
+        }
+    } catch (error: any) {
+        console.error(error.message);
+        throw error;
+
+    }
 };
 
 
-const uploadImage = async (imagepath:string) => {
-try {
-        const response = await fetch(`${serverUrl}/api/upload`,{
-        method:"POST",
-        body: JSON.stringify({path:imagepath})
-    })
+const uploadImage = async (imagepath: string) => {
+    try {
+        const response = await fetch(`${serverUrl}/api/upload`, {
+            method: "POST",
+            body: JSON.stringify({ path: imagepath })
+        })
 
-    return await response.json();
-    
-} catch (error:any) {
-    throw new Error(error.message)
-}
+        return await response.json();
+
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
 }
 
-export const createNewProject = async (form: ProjectForm, creatorId: string, token:string) => {
+export const createNewProject = async (form: ProjectForm, creatorId: string, token: string) => {
     const imageUrl = await uploadImage(form.image);
-    if(imageUrl.url){
+    if (imageUrl.url) {
         client.setHeader("Authorization", `Bearer ${token}`)
 
         const variables = {
             input: {
                 ...form,
-                Image:imageUrl.url,
-                createdBy : {
-                    link:creatorId
+                Image: imageUrl.url,
+                createdBy: {
+                    link: creatorId
                 }
             }
         }
         return makeGraphqlRequest(createProjectMutation, variables)
     }
+}
+
+export const fetchAllProject = async (category?: string, endCusor?: string) => {
+    client.setHeader('x-api-key', apikey)
+
+    return makeGraphqlRequest(projectsQuery, { category, endCusor })
+
 }

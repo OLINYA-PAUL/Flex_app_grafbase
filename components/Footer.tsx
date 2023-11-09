@@ -9,10 +9,10 @@ interface linkProps {
 }
 
 const FooterItemsLinks = ({ title, links }: linkProps) => (
-  <div className="items-start justify-start self-start flex-1">
-    <div className="font-bold text-gray text-[20px] mt-3">{title}</div>
+  <div className="items-start justify-start self-start sm:flex-1 w-full mr-5">
+    <div className="font-bold text-gray text-[20px] mt-3 mr-3 ">{title}</div>
     <div>
-      <ul className="mt-5">
+      <ul className="mt-5 ">
         {links &&
           links.map((links, index) => (
             <li
@@ -45,35 +45,48 @@ const Footer = () => {
             share, grow, and get hired.
           </p>
         </div>
-        <div className="w-full flex-wrap mt-5 h-auto flex items-start justify-start flex-1 self-start">
-          <FooterItemsLinks
-            title={footerLinks[0].title}
-            links={footerLinks[0].links}
-          />
-          <FooterItemsLinks
-            title={footerLinks[1].title}
-            links={footerLinks[1].links}
-          />
-          <FooterItemsLinks
-            links={footerLinks[2].links}
-            title={footerLinks[2].title}
-          />
-          <FooterItemsLinks
-            title={footerLinks[3].title}
-            links={footerLinks[3].links}
-          />
-          <FooterItemsLinks
-            title={footerLinks[4].title}
-            links={footerLinks[4].links}
-          />
-          <FooterItemsLinks
-            title={footerLinks[5].title}
-            links={footerLinks[5].links}
-          />
-          <FooterItemsLinks
+        <div className="w-full md:flex-nowrap  mt-5 h-auto flex items-start justify-start flex-1 self-start">
+          <div >
+            <FooterItemsLinks
+              title={footerLinks[0].title}
+              links={footerLinks[0].links}
+            />
+          </div>
+          <div >
+            <FooterItemsLinks
+              title={footerLinks[1].title}
+              links={footerLinks[1].links}
+            />
+          </div>
+          <div>
+            <FooterItemsLinks
+              links={footerLinks[2].links}
+              title={footerLinks[2].title}
+            />
+          </div>
+          <div>
+            <FooterItemsLinks
+              title={footerLinks[3].title}
+              links={footerLinks[3].links}
+            />
+          </div>
+          <div>
+            <FooterItemsLinks
+              title={footerLinks[4].title}
+              links={footerLinks[4].links}
+            />
+          </div>
+          <div>
+            <FooterItemsLinks
+              title={footerLinks[5].title}
+              links={footerLinks[5].links}
+            />
+          </div>
+          <div> <FooterItemsLinks
             title={footerLinks[6].title}
             links={footerLinks[6].links}
           />
+          </div>
         </div>
       </div>
       <div className="flexBetween w-full text-white  pb-5 ">

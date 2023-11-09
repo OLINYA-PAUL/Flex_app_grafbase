@@ -31,7 +31,7 @@ const Button = ({
         className={`
          ${textColour ? `text-${textColour}` : "text-white"}
          ${isSummiting ? "bg-red-400" : bgColour ? bgColour : "bg-purple-600"}
-        flexCenter px-8 py-3 mt-5 outline-none border-none gap-3 rounded-md font-bold`}
+        flexCenter px-5 py-3 outline-none border-none gap-3 rounded-md font-semibold`}
       >
         {leftIcon && (
           //@ts-ignore
